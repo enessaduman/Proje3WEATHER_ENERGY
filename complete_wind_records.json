@@ -1394,13 +1394,13 @@
   {
     "Full Date":"2025-08-24T16:00:00.000",
     "EXPECTED - BEST":10455.99,
-    "EXPECTED - WORST":1824.6200845057,
+    "EXPECTED - WORST":3452.1376637955,
     "Total Hourly Energy (REAL)":6970.66
   },
   {
     "Full Date":"2025-08-24T17:00:00.000",
     "EXPECTED - BEST":11177.715,
-    "EXPECTED - WORST":1333.9607035292,
+    "EXPECTED - WORST":2961.478282819,
     "Total Hourly Energy (REAL)":7451.81
   },
   {
@@ -13310,7 +13310,7 @@
   {
     "Full Date":"2025-11-15T10:00:00.000",
     "EXPECTED - BEST":3484.3,
-    "EXPECTED - WORST":186.23,
+    "EXPECTED - WORST":267.1438707519,
     "Total Hourly Energy (REAL)":3484.3
   },
   {
