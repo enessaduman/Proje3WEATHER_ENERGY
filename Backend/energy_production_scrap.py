@@ -57,5 +57,5 @@ with sync_playwright() as p:
             break
         else:
             next_button.click()
-with open("energy_data.json","w") as f:
+with open("energy_data.json", "w") as f:
     json.dump(table_data,f,indent=2,ensure_ascii=False)
