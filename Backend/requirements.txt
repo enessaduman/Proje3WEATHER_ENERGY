@@ -3,6 +3,5 @@ scrapy
 python-dotenv
 pandas
 numpy
-sqlite
 fastapi
 uvicorn
