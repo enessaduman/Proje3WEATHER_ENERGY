@@ -3,3 +3,4 @@ scrapy
 python-dotenv
 pandas
 numpy
+sqlite
