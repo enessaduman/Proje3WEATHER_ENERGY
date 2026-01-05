@@ -34,7 +34,7 @@ class EnergyDatabase:
         table_schema = '''
                        (
                            id                      INTEGER PRIMARY KEY AUTOINCREMENT,
-                           full_date               TEXT,
+                           full_date               TEXT UNIQE,
                            expected_best           REAL,
                            expected_worst          REAL,
                            total_hourly_real       REAL
@@ -94,7 +94,7 @@ class EnergyDatabase:
 
             conn = sqlite3.connect(self.db_name)
             # Append data to the specific table
-            df.to_sql(table_name, conn, if_exists='append', index=False)
+            df.to_sql(table_name, conn, if_exists='replace', index=False)
             conn.commit()
             conn.close()
             print(f"Success: {len(df)} rows from '{json_file_path}' inserted into '{table_name}'.")
