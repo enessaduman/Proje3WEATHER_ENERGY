@@ -26,7 +26,7 @@ def main():
 
     with sync_playwright() as p:
         # slow_mo is great for visualizing the process during debugging.
-        browser = p.chromium.launch(headless=False, slow_mo=1000)
+        browser = p.chromium.launch(headless=True, slow_mo=1000)
         context = browser.new_context()
         page = context.new_page()
 
@@ -39,7 +39,7 @@ def main():
 
         # Login Button Execution
         page.click("button[type='submit']")
-
+        page.wait_for_load_state("networkidle")
         # Hover to the sidebar, go down to the table page link
         page.locator(".narrow-container").hover()
         page.locator("span.item-title").filter(has_text="ELEKTRİK").first.click()
@@ -53,7 +53,7 @@ def main():
 
         # Bringing the table
         page.get_by_role("button", name="Sorgula").click()
-
+        page.wait_for_selector("div.epuitable-body-section")
         # Table expand
         # nth(-1) is the correct usage to select the last element.
         page.locator("div[class='react-select__control css-13cymwt-control']").nth(-1).click()
@@ -88,8 +88,10 @@ def main():
                 break
 
             next_button.click()
+            page.wait_for_timeout(500)
 
     # Specifying encoding is critical for non-ASCII characters.
+    print("Web Scraping is Completed!")
     with open("energy_data.json", "w", encoding="utf-8") as f:
         json.dump(table_data, f, indent=2, ensure_ascii=False)
 

@@ -275,6 +275,7 @@ def main():
     solar_pivot = solar_pivot[selected_solar_colunms].copy()
     solar_pivot.to_json('complete_solar_records.json', indent=2,
                         orient='records', date_format='iso')
+    print("Completed: Solar Data, stored in complete_solar_records.json")
 
     selected_wind_colunms = ['Full Date', 'EXPECTED - BEST',
                              'EXPECTED - WORST', 'Total Hourly Energy (REAL)']
@@ -282,7 +283,7 @@ def main():
     wind_pivot = wind_pivot[selected_wind_colunms].copy()
     wind_pivot.to_json('complete_wind_records.json', indent=2,
                        orient='records', date_format='iso')
-
+    print("Completed: Wind Data, stored in complete_wind_records.json")
 
 if __name__ == "__main__":
     main()
