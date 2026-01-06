@@ -26,7 +26,7 @@ def main():
 
     with sync_playwright() as p:
         # slow_mo is great for visualizing the process during debugging.
-        browser = p.chromium.launch(headless=True, slow_mo=1000)
+        browser = p.chromium.launch(headless=True, slow_mo=750)
         context = browser.new_context()
         page = context.new_page()
 
@@ -36,7 +36,7 @@ def main():
         # Filling the requirements for login
         page.fill("#username", username)
         page.fill("#password", password)
-
+        print("Logining DONE!")
         # Login Button Execution
         page.click("button[type='submit']")
         page.wait_for_load_state("networkidle")
@@ -46,7 +46,7 @@ def main():
         page.locator("span.item-title").filter(has_text="ELEKTRİK ÜRETİM").first.click()
         page.locator("span.item-title").filter(has_text="Gerçekleşen Üretim").first.click()
         page.locator("span.item-title").filter(has_text="Gerçek Zamanlı Üretim").first.click()
-
+        print("Table found!")
         # Adjust the date interval
         page.fill("input[name='startDate']", "15.08.2025")
         page.fill("input[name='endDate']", "15.11.2025")
@@ -57,7 +57,12 @@ def main():
         # Table expand
         # nth(-1) is the correct usage to select the last element.
         page.locator("div[class='react-select__control css-13cymwt-control']").nth(-1).click()
-
+        print("Table loaded, SCRAPING IS STARTED!")
+        #A loading status bar
+        loading_bar=["-"]*20
+        status=0
+        current_bar=0
+        print("     Loading Bar")
         # NOW WE HAVE THE TABLE!
         while next_button_visibility:
             # Feeding Playwright content to Scrapy Selector
@@ -80,6 +85,11 @@ def main():
                         "Solar Energy": cell_content[9],
                         "Wind Energy": cell_content[8],
                     })
+            if (status % 5) == 0:
+                loading_bar[current_bar]="="
+                print(f"\r[{"".join(loading_bar)}]     {(current_bar+1)*5}% Completed", end="")
+                current_bar += 1
+            status=status+1
 
             next_button = page.locator("div[role='button'][class*='epuitable-pagination-next']")
 
@@ -88,10 +98,12 @@ def main():
                 break
 
             next_button.click()
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(150)
 
     # Specifying encoding is critical for non-ASCII characters.
-    print("Web Scraping is Completed!")
+    loading_bar=["="]*20
+    print(f"\r[{"".join(loading_bar)}]     {100}% Completed", end="")
+    print("\nWeb Scraping is Completed!")
     with open("energy_data.json", "w", encoding="utf-8") as f:
         json.dump(table_data, f, indent=2, ensure_ascii=False)
 

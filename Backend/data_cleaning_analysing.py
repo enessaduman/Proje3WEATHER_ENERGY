@@ -192,6 +192,7 @@ def main():
     deleted_columns = ["Date", "Hour"]
     df_energy.drop(columns=deleted_columns, inplace=True)
     df_energy.set_index(df_energy['DATE/HOUR'], inplace=True)
+    df_energy = df_energy[~df_energy.index.duplicated(keep='first')]
 
     # Clean Wind Energy Strings
     df_energy['Wind Energy'] = df_energy['Wind Energy'].astype(str).str.strip()
@@ -204,13 +205,16 @@ def main():
     df_energy['Solar Energy'] = df_energy['Solar Energy'].str.replace('.', '')
     df_energy['Solar Energy'] = df_energy['Solar Energy'].str.replace(',', '.')
     df_energy['Solar Energy'] = df_energy['Solar Energy'].astype(float)
-
     # --- Preprocessing & Calculations ---
     target_colunms = ['days.datetime', 'datetime', 'temp', 'solarradiation',
                       'windspeed', 'address']
     df_final = df_combined[target_colunms].copy()
 
     df_final = convert_units(df_final)
+
+    df_final = df_final.reset_index()
+    df_final = df_final.drop_duplicates(subset=['Full Date', 'address'], keep='first')
+
     raw_wind_energy_cal(df_final)
     raw_solar_energy_cal(df_final)
 
